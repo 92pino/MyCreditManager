@@ -61,7 +61,7 @@ class StudentManger {
         print("성적을 추가할 학생의 이름, 과목 이름, 성적(A+, A, F 등)을 띄어쓰기로 구분하여 차례로 작성해주세요 \n입력예) Mickey Swift A+ \n만약에 학생의 성적 중 해당 과목이 존재하면 기존 점수가 갱신됩니다.")
         let input = readLine()!.split(separator: " ").map { String($0) }
 
-        if input.count != 3 { return errorPrint() }
+        if input.count != 3 { errorPrint() }
 
         let name = input[0], subject = input[1], grade = input[2].uppercased()
 
@@ -110,22 +110,20 @@ class StudentManger {
 
         let input = readLine()!.split(separator: " ").map { String($0) }
 
-        if input.count != 2 { return errorPrint() }
+        if input.count != 2 { errorPrint() }
 
         let name = input[0], subject = input[1]
 
         for (index, student) in students.enumerated() {
-            if student.name == name {
-                if student.subject.contains(where: { element in
-                    element.key == subject
-                }) {
-                    students[index].subject.removeValue(forKey: subject)
-                    print("\(name) 학생의 \(subject) 과목의 성적이 삭제되었습니다.")
-                    return
-                }
+            if student.name == name && student.subject.contains(where: { element in
+                element.key == subject
+            }) {
+                students[index].subject.removeValue(forKey: subject)
+                print("\(name) 학생의 \(subject) 과목의 성적이 삭제되었습니다.")
+                return
             }
         }
-
+        
         print("\(name) 학생을 찾지 못했습니다.")
     }
 
@@ -148,7 +146,6 @@ class StudentManger {
         for student in students where input == student.name {
             if student.subject.isEmpty {
                 print("\(student.name) 학생의 성적이 존재하지 않습니다.")
-                return
             } else {
                 for subject in student.subject {
                     print("\(subject.key): \(subject.value)")
@@ -157,8 +154,6 @@ class StudentManger {
 
                 sum /= Double(student.subject.count)
                 print("평점 : \(sum)")
-
-                return
             }
         }
     }
